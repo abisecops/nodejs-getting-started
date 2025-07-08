@@ -12,19 +12,19 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Docker Image name from environment') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
-        stage('Load Image to Minikube') {
+        stage('Load Docker Image to Minikube') {
             steps {
                 sh 'minikube image load $IMAGE_NAME'
             }
         }
 
-        stage('Generate Deployment YAML') {
+        stage('Generate Deployment YAML from imperative command') {
             steps {
                 sh '''
                 kubectl create deployment heroku-node-app \
@@ -34,7 +34,7 @@ pipeline {
             }
         }
 
-        stage('Generate Service YAML') {
+        stage('Generate Service YAML file from imperative') {
             steps {
                 sh '''
                 kubectl expose deployment heroku-node-app \
@@ -54,7 +54,7 @@ pipeline {
             }
         }
 
-        stage('Access Info') {
+        stage('Access the service from url') {
             steps {
                 sh 'minikube service heroku-node-service --url'
             }
